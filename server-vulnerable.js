@@ -12,12 +12,15 @@ app.use(express.json());
 app.use(express.static(path.join(__dirname)));
 
 // Configuración de la conexión a PostgreSQL
+require('dotenv').config();
+
+// Luego modifica la configuración de la base de datos:
 const pool = new Pool({
-    user: 'yazi',
-    host: 'localhost',
-    database: 'postgres',
-    password: '2580',
-    port: 5432,
+    user: process.env.DB_USER,
+    host: process.env.DB_HOST,
+    database: process.env.DB_NAME,
+    password: process.env.DB_PASSWORD,
+    port: process.env.DB_PORT,
 });
 
 // Probar conexión a la base de datos
