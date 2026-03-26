@@ -29,20 +29,21 @@
     </div>
 
     <script>
-        document.getElementById('regiForm').addEventListener('submit', async function(e) {
+        document.getElementById('regiForm').addEventListener('submit', async function (e) {
             e.preventDefault();
-            
+
             const nombre = document.getElementById('name').value;
             const gmail = document.getElementById('gmail').value;
             const contraseña = document.getElementById('pass').value;
-            
+
             const messageDiv = document.getElementById('message');
-            
+
             // Limpiar mensaje anterior
             messageDiv.style.display = 'block';
             messageDiv.innerHTML = 'Procesando...';
             messageDiv.style.color = 'blue';
-            
+
+
             try {
                 const response = await fetch('http://localhost:5000/register', {
                     method: 'POST',
@@ -55,17 +56,21 @@
                         contraseña: contraseña
                     })
                 });
-                
+
                 const data = await response.json();
                 console.log('Respuesta del servidor:', data);
-                
+
                 if (response.ok && data.success) {
-                    messageDiv.style.color = 'green';
                     messageDiv.innerHTML = '✅ Usuario registrado exitosamente. Redirigiendo al login...';
-                    
+                    messageDiv.style.color = 'rgb(0, 56, 0)';
+                    messageDiv.style.fontSize = '12px';
+                    messageDiv.style.fontFamily = 'Verdana, Geneva, Tahoma, sans-serif';
+                    messageDiv.style.textAlign = 'center';
+                    messageDiv.style.fontWeight = 'bold';
+
                     // Limpiar formulario
                     document.getElementById('regiForm').reset();
-                    
+
                     // Redirigir después de 2 segundos
                     setTimeout(() => {
                         window.location.href = 'index.html';

@@ -131,7 +131,7 @@ a {
     background-color: transparent;
     border: 0;
     border-bottom: solid 2px rgba(0, 0, 0, 0.747);
-    color: rgb(255, 255, 255);
+    color: rgb(0, 0, 0);
     font-size: 15px;
     outline: none;
 }
@@ -158,6 +158,7 @@ a {
     margin-left: 42px;
     margin-top: 5px;
 }
+
 
 #log a {
     color: rgb(115, 255, 0);

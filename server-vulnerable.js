@@ -230,7 +230,7 @@ app.get('/tabla-info', async (req, res) => {
 });
 
 app.listen(PORT, () => {
-    console.log(" Autor: Yazi");
+    console.log("Autor: Yazi");
     console.log(`🚀 Servidor VULNERABLE corriendo en http://localhost:${PORT}`);
     console.log("⚠️  Este servidor es INTENCIONALMENTE vulnerable a SQL Injection");
     console.log("📚 Para prácticas de seguridad ofensiva");
