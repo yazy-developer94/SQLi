@@ -35,14 +35,29 @@
             const nombre = document.getElementById('name').value;
             const gmail = document.getElementById('gmail').value;
             const contraseña = document.getElementById('pass').value;
-
             const messageDiv = document.getElementById('message');
 
-            // Limpiar mensaje anterior
-            messageDiv.style.display = 'block';
-            messageDiv.innerHTML = 'Procesando...';
-            messageDiv.style.color = 'blue';
+            // Validaciones adicionales
+            if (nombre.length < 3) {
+                showMessage(messageDiv, '✗ El nombre debe tener al menos 3 caracteres', 'error');
+                setTimeout(() => hideMessage(messageDiv), 3000);
+                return;
+            }
 
+            if (!gmail.includes('@') || !gmail.includes('.')) {
+                showMessage(messageDiv, '✗ Por favor ingresa un email válido', 'error');
+                setTimeout(() => hideMessage(messageDiv), 3000);
+                return;
+            }
+
+            if (contraseña.length < 4) {
+                showMessage(messageDiv, '✗ La contraseña debe tener al menos 4 caracteres', 'error');
+                setTimeout(() => hideMessage(messageDiv), 3000);
+                return;
+            }
+
+            // Mostrar mensaje de carga
+            showMessage(messageDiv, '⌛ Procesando registro...', 'loading');
 
             try {
                 const response = await fetch('http://localhost:5000/register', {
@@ -61,12 +76,7 @@
                 console.log('Respuesta del servidor:', data);
 
                 if (response.ok && data.success) {
-                    messageDiv.innerHTML = '✅ Usuario registrado exitosamente. Redirigiendo al login...';
-                    messageDiv.style.color = 'rgb(0, 56, 0)';
-                    messageDiv.style.fontSize = '12px';
-                    messageDiv.style.fontFamily = 'Verdana, Geneva, Tahoma, sans-serif';
-                    messageDiv.style.textAlign = 'center';
-                    messageDiv.style.fontWeight = 'bold';
+                    showMessage(messageDiv, '✓ Usuario registrado exitosamente. Redirigiendo al login...', 'success');
 
                     // Limpiar formulario
                     document.getElementById('regiForm').reset();
@@ -76,18 +86,30 @@
                         window.location.href = 'index.html';
                     }, 2000);
                 } else {
-                    messageDiv.style.color = 'red';
-                    messageDiv.innerHTML = `❌ Error: ${data.message || 'No se pudo registrar el usuario'}`;
-                    if (data.error) {
-                        messageDiv.innerHTML += `<br>Detalle: ${data.error}`;
-                    }
+                    showMessage(messageDiv, `✗ ${data.message || 'No se pudo registrar el usuario'}`, 'error');
+                    setTimeout(() => hideMessage(messageDiv), 4000);
                 }
             } catch (error) {
                 console.error('Error de conexión:', error);
-                messageDiv.style.color = 'red';
-                messageDiv.innerHTML = '❌ Error de conexión con el servidor. Asegúrate de que el servidor esté corriendo en http://localhost:5000';
+                showMessage(messageDiv, '✗ Error de conexión con el servidor. Asegúrate de que el servidor esté corriendo en http://localhost:5000', 'error');
+                setTimeout(() => hideMessage(messageDiv), 5000);
             }
         });
+
+        function showMessage(messageDiv, text, type) {
+            messageDiv.className = `message ${type}`;
+            messageDiv.innerHTML = text;
+            messageDiv.style.display = 'flex';
+            messageDiv.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        }
+
+        function hideMessage(messageDiv) {
+            messageDiv.classList.add('hiding');
+            setTimeout(() => {
+                messageDiv.style.display = 'none';
+                messageDiv.classList.remove('hiding');
+            }, 300);
+        }
     </script>
 </body>
 
